@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import FastAPI # fastapi를 import (클래스)
 
 from enum import Enum
@@ -30,3 +32,10 @@ async def get_model(model_name: ModelName):
 @app.get("/files/{file_path:path}") # 경로포함 매개변수
 async def read_file(file_path: str):
     return {"file_path": file_path}
+
+@app.get("/items/{item_id}")
+async def read_user_item(
+    item_id: str, needy: str, skip: int = 0, limit: Optional[int] = None 
+): # needy : 필수적인 str, skip : 기본값이 0인 int, limit : 선택적인 int
+    item = {"item_id": item_id, "needy": needy, "skip": skip, "limit": limit}
+    return item
