@@ -47,3 +47,7 @@ async def read_user_item(
 ): # needy : 필수적인 str, skip : 기본값이 0인 int, limit : 선택적인 int
     item = {"item_id": item_id, "needy": needy, "skip": skip, "limit": limit}
     return item
+
+@app.post("/items/")
+async def create_item(item : Item):
+    return item
