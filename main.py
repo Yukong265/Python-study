@@ -2,12 +2,20 @@ from typing import Optional
 
 from fastapi import FastAPI # fastapi를 import (클래스)
 
+from pydantic import BaseModel
+
 from enum import Enum
 
 class ModelName(str, Enum):
     alexnet = "alexnet"
     resnet = "resnet"
     lenet = "lenet"
+
+class Item(BaseModel):
+    name: str
+    description: Optional[str] = None
+    price: float
+    tax: Optional[float] = None
 
 app = FastAPI() # app이라는 fastapi 인스턴스 생성
 
