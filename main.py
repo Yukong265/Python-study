@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import FastAPI, Query # fastapi랑 Query를 import (클래스)
+from fastapi import FastAPI, Path, Query # fastapi랑 Query를 import (클래스)
 
 from pydantic import BaseModel
 
@@ -42,11 +42,14 @@ async def read_file(file_path: str):
     return {"file_path": file_path}
 
 @app.get("/items/{item_id}")
-async def read_user_item(
-    item_id: str, needy: str, skip: int = 0, limit: Optional[int] = None 
-): # needy : 필수적인 str, skip : 기본값이 0인 int, limit : 선택적인 int
-    item = {"item_id": item_id, "needy": needy, "skip": skip, "limit": limit}
-    return item
+async def read_items(
+    item_id: int = Path(..., title="The ID of the item to get"),
+    q: Optional[str] = Query(None, alias="item-query"),
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
 
 @app.post("/items/")
 async def create_item(item : Item):
@@ -70,7 +73,7 @@ app = FastAPI()
 @app.get("/items/")
 async def read_items(q: Optional[str] = Query(None, max_length=50)): # min_length로 최소 길이 설정 가능
     results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
-    if q:
+    if q:   
         results.update({"q": q})
     return results
 
