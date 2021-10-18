@@ -19,6 +19,7 @@ class Item(BaseModel):
     response_model=Item,
     summary="Create an item",
     response_description="The created item",
+    deprecated=True
 )
 async def create_item(item: Item):
     """
